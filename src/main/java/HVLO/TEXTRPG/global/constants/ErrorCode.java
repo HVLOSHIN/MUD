@@ -7,7 +7,11 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+    //User
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER-01","User를 찾을 수 없습니다."),
+    ID_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "USER-02","이미 존재하는 아이디입니다."),
+    NICKNAME_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "USER-03","이미 존재하는 닉네임입니다."),
+
 
     USER_STATS_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_STATS-01","User Stats를 찾을 수 없습니다."),
 
