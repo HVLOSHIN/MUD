@@ -1,4 +1,4 @@
-package HVLO.TEXTRPG.global;
+package HVLO.TEXTRPG.global.security;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
