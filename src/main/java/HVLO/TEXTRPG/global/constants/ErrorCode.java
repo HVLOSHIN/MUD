@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+    INVALID_REFRESH_TOKEN(HttpStatus.NOT_FOUND, "SECURITY-01","올바르지 않은 리프레시 토큰"),
+
     //User
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER-01","User를 찾을 수 없습니다."),
     ID_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "USER-02","이미 존재하는 아이디입니다."),
