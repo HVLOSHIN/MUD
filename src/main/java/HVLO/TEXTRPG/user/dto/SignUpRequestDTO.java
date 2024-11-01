@@ -2,6 +2,7 @@ package HVLO.TEXTRPG.user.dto;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,5 +23,11 @@ public class SignUpRequestDTO {
     @Column(nullable = false)
     @NotBlank(message = "비밀번호를 입력해주세요.")
     @Size(min = 8, max = 16, message = "비밀번호는 8글자 이상, 16글자 이하로 입력해주세요.")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+=-]).{8,16}$",
+            message = "비밀번호는 대문자, 소문자, 숫자 및 특수 문자를 포함해야 합니다.")
     private String password;
+
+    @Column(nullable = false)
+    @NotBlank(message = "비밀번호 확인을 입력해주세요.")
+    private String confirmPassword;
 }

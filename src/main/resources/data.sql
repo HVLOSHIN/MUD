@@ -5,8 +5,8 @@ INSERT INTO TEXTRPG.equipment_effect (value, equipment_id, effect_type) VALUES
 (1.8, 1, 'PA'),
 (0.9, 1, 'AR');
 
-INSERT INTO TEXTRPG.users (created_at, updated_at, login_id, username, password, role) VALUES
-('2024-10-31 18:09:57', '2024-10-31 18:10:00', 'test', 'test', 'test', 'ADMIN');
+INSERT INTO TEXTRPG.users (created_at, updated_at, login_id, username, password, role, salt) VALUES
+('2024-10-31 18:09:57', '2024-10-31 18:10:00', 'test', 'test', 'test', 'ADMIN', 'test');
 
 INSERT INTO TEXTRPG.user_stats (ap, current_action_points, dexterity, gold, hp, intelligence, level, max_action_points, strength, user_id) VALUES
 (5, 100, 10, 0, 10, 10, 1, 100, 10, 1);
