@@ -15,7 +15,6 @@ import HVLO.TEXTRPG.user.mapper.UserEquipmentMapper;
 import HVLO.TEXTRPG.user.mapper.UserLogMapper;
 import HVLO.TEXTRPG.user.mapper.UserMasteryMapper;
 import HVLO.TEXTRPG.user.repository.*;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -96,8 +95,7 @@ public class UserService {
 
     public List<UserMasteryDTO> getUserMasteryDTO(Long userId) {
         List<UserMastery> masteries = userMasteryRepository.findByUserId(userId);
-        return masteries.stream().map(userMastery -> {
-            return UserMasteryMapper.toDTO(userMastery, jobService.getJobDTOById(userMastery.getJobId()));
-        }).collect(Collectors.toList());
+        return masteries.stream().map(userMastery -> UserMasteryMapper.toDTO(userMastery,
+                jobService.getJobDTOById(userMastery.getJobId()))).collect(Collectors.toList());
     }
 }

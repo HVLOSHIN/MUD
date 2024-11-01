@@ -2,22 +2,15 @@ package HVLO.TEXTRPG.user.entity;
 
 import HVLO.TEXTRPG.global.constants.Role;
 import HVLO.TEXTRPG.global.entity.BaseTime;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -48,10 +41,4 @@ public class User extends BaseTime {
 
     @Column(nullable = false)
     private String salt;
-
-    public User(String loginId, String username, String password) {
-        this.loginId = loginId;
-        this.username = username;
-        this.password = password;
-    }
 }
