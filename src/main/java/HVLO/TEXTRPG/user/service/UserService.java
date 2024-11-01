@@ -6,10 +6,7 @@ import HVLO.TEXTRPG.global.constants.ErrorCode;
 import HVLO.TEXTRPG.global.exception.GlobalException;
 import HVLO.TEXTRPG.job.service.JobService;
 import HVLO.TEXTRPG.user.dto.*;
-import HVLO.TEXTRPG.user.entity.User;
-import HVLO.TEXTRPG.user.entity.UserEquipment;
-import HVLO.TEXTRPG.user.entity.UserLog;
-import HVLO.TEXTRPG.user.entity.UserMastery;
+import HVLO.TEXTRPG.user.entity.*;
 import HVLO.TEXTRPG.user.mapper.SignUpMapper;
 import HVLO.TEXTRPG.user.mapper.UserEquipmentMapper;
 import HVLO.TEXTRPG.user.mapper.UserLogMapper;
@@ -35,33 +32,50 @@ public class UserService {
 
     // 회원가입
     public User createUser(SignUpRequestDTO dto) {
-        // 중복검사
-        if (userRepository.existsByLoginId(dto.getLoginId())) {
-            throw new GlobalException(ErrorCode.ID_ALREADY_EXISTS);
-        }
-        if (userRepository.existsByUsername(dto.getUsername())) {
-            throw new GlobalException(ErrorCode.NICKNAME_ALREADY_EXISTS);
-        }
+        validateSignUp(dto);
         User target = SignUpMapper.toEntity(dto);
         // 암호화
         String salt = EncryptionUtil.generateSalt();
         target.setSalt(salt);
         target.setPassword(EncryptionUtil.hashPassword(dto.getPassword(), salt));
-        return userRepository.save(target);
+        User savedUser = userRepository.save(target);
+        saveRelativeEntity(savedUser);
+        return savedUser;
     }
 
+    // 관계있는 엔티티 같이 생성
+    private void saveRelativeEntity(User savedUser) {
+        UserStats userStats = new UserStats();
+        userStats.setUserId(savedUser.getId());
+        userStatsRepository.save(userStats);
+
+        UserAchievements userAchievements = new UserAchievements();
+        userAchievements.setUserId(savedUser.getId());
+        userAchievementsRepository.save(userAchievements);
+    }
+
+    // 유효성 검사
+    private void validateSignUp(SignUpRequestDTO dto) {
+        if(userRepository.existsByLoginId(dto.getLoginId())) {
+            throw new GlobalException(ErrorCode.ID_ALREADY_EXISTS);
+        }
+        if(userRepository.existsByUsername(dto.getUsername())) {
+            throw new GlobalException(ErrorCode.NICKNAME_ALREADY_EXISTS);
+        }
+        if(!dto.getPassword().equals(dto.getConfirmPassword())) {
+            throw new GlobalException(ErrorCode.PASSWORDS_DO_NOT_MATCH);
+        }
+    }
+
+    // 비밀번호 확인
     public boolean verifyPassword(User user, String inputPassword) {
         String hashedInputPassword = EncryptionUtil.hashPassword(inputPassword, user.getSalt());
         return user.getPassword().equals(hashedInputPassword);
     }
 
 
-
-
-
-
-    public UserDTO getUserDTO(Long userId){
-        UserDTO dto = new UserDTO();
+    public UserUnitedDTO getUserDTO(Long userId){
+        UserUnitedDTO dto = new UserUnitedDTO();
         dto.setUserStats(getUserStatsDTO(userId));
         dto.setAchievements(getUserAchievementsDTO(userId));
         dto.setLogs(getUserLogDTOs(userId));
