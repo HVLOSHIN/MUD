@@ -2,7 +2,6 @@ package HVLO.TEXTRPG.global.config;
 
 import HVLO.TEXTRPG.global.security.JwtInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -20,17 +19,13 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/api/**"); // JWT 검증이 필요한 경로
     }
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        // 오류생기면 여기 수정
-                        .allowedOrigins("http://localhost:3000")
-                        .allowedMethods("*")
-                        .allowedHeaders("*");
-            }
-        };
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+//                .allowedOrigins("http://localhost:3000") // React 앱의 출처
+//                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+//                .allowedHeaders("*, Authorization", "Content-Type", "Accept")
+//                .allowCredentials(true); // 인증 정보 포함 허용
+//
+//    }
 }
