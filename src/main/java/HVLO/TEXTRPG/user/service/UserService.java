@@ -1,6 +1,7 @@
 package HVLO.TEXTRPG.user.service;
 
 import HVLO.TEXTRPG.equipment.service.EquipmentService;
+import HVLO.TEXTRPG.global.constants.JobStatus;
 import HVLO.TEXTRPG.global.security.EncryptionUtil;
 import HVLO.TEXTRPG.global.security.JwtUtil;
 import HVLO.TEXTRPG.global.constants.ErrorCode;
@@ -57,7 +58,7 @@ public class UserService {
         if (verified) {
             // 로그인 성공 로직
             logUpdate(loginRequestDTO, target);
-            return new AccessTokenDTO(jwtUtil.generateToken(target), jwtUtil.generateRefreshToken(target));
+            return new AccessTokenDTO(jwtUtil.generateToken(target), jwtUtil.generateRefreshToken(target), target.getId());
         }
         else {
             throw new GlobalException(ErrorCode.PASSWORDS_DO_NOT_MATCH);
@@ -91,6 +92,8 @@ public class UserService {
         UserAchievements userAchievements = new UserAchievements();
         userAchievements.setUserId(savedUser.getId());
         userAchievementsRepository.save(userAchievements);
+        UserMastery userMastery = new UserMastery(savedUser.getId(),1L, JobStatus.RUNNING,1L,1L);
+        userMasteryRepository.save(userMastery);
     }
 
     // 유효성 검사
@@ -105,8 +108,6 @@ public class UserService {
             throw new GlobalException(ErrorCode.PASSWORDS_DO_NOT_MATCH);
         }
     }
-
-
 
     private void logUpdate(LogInRequestDTO loginRequestDTO, User target) {
         UserLog userLog = new UserLog();
@@ -124,7 +125,11 @@ public class UserService {
 
 
     public UserUnitedDTO getUserDTO(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new GlobalException(ErrorCode.USER_NOT_FOUND));
         UserUnitedDTO dto = new UserUnitedDTO();
+        dto.setUserid(user.getId());
+        dto.setUsername(user.getUsername());
         dto.setUserStats(getUserStatsDTO(userId));
         dto.setAchievements(getUserAchievementsDTO(userId));
         dto.setLogs(getUserLogDTOs(userId));
