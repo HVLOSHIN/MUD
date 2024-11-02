@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping
-    public ResponseEntity<UserUnitedDTO> getUser() {
-        return ResponseEntity.ok(userService.getUserDTO(1L));
+    @GetMapping("/{id}")
+    public ResponseEntity<UserUnitedDTO> getUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserDTO(id));
     }
 
     @PostMapping("/signup")

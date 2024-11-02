@@ -9,4 +9,5 @@ import lombok.Setter;
 public class AccessTokenDTO {
     public String access_token;
     public String refresh_token;
+    public Long userId;
 }
