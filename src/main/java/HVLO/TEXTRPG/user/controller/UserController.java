@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<UserUnitedDTO> getUser() {
-        return ResponseEntity.ok(userService.getUserDTO(2L));
+        return ResponseEntity.ok(userService.getUserDTO(1L));
     }
 
     @PostMapping("/signup")

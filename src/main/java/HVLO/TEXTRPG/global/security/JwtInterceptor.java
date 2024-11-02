@@ -6,12 +6,14 @@ import HVLO.TEXTRPG.user.entity.User;
 import HVLO.TEXTRPG.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.util.List;
 
+@Slf4j
 @Component
 public class JwtInterceptor implements HandlerInterceptor {
     @Autowired
@@ -39,7 +41,9 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         // Authorization 헤더에서 JWT 가져오기
         String authHeader = request.getHeader("Authorization");
-
+        if(authHeader == null || !authHeader.startsWith("Bearer ")) {
+            log.info(authHeader);
+        }
         // Bearer 토큰 검증
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7); // "Bearer " 뒤의 토큰
