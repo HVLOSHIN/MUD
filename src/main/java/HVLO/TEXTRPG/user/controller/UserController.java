@@ -3,8 +3,7 @@ package HVLO.TEXTRPG.user.controller;
 import HVLO.TEXTRPG.user.dto.AccessTokenDTO;
 import HVLO.TEXTRPG.user.dto.LogInRequestDTO;
 import HVLO.TEXTRPG.user.dto.SignUpRequestDTO;
-import HVLO.TEXTRPG.user.dto.UserUnitedDTO;
-import HVLO.TEXTRPG.user.entity.User;
+import HVLO.TEXTRPG.user.dto.UserDTO;
 import HVLO.TEXTRPG.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +18,11 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserUnitedDTO> getUser(@PathVariable Long id) {
+    public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserDTO(id));
     }
+
+
 
     @PostMapping("/signup")
     public ResponseEntity<Void> createUser(@Valid @RequestBody SignUpRequestDTO dto) {

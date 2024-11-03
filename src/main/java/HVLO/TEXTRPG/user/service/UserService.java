@@ -1,6 +1,7 @@
 package HVLO.TEXTRPG.user.service;
 
 import HVLO.TEXTRPG.equipment.service.EquipmentService;
+import HVLO.TEXTRPG.global.constants.EquipmentGrade;
 import HVLO.TEXTRPG.global.constants.JobStatus;
 import HVLO.TEXTRPG.global.security.EncryptionUtil;
 import HVLO.TEXTRPG.global.security.JwtUtil;
@@ -9,10 +10,7 @@ import HVLO.TEXTRPG.global.exception.GlobalException;
 import HVLO.TEXTRPG.job.service.JobService;
 import HVLO.TEXTRPG.user.dto.*;
 import HVLO.TEXTRPG.user.entity.*;
-import HVLO.TEXTRPG.user.mapper.SignUpMapper;
-import HVLO.TEXTRPG.user.mapper.UserEquipmentMapper;
-import HVLO.TEXTRPG.user.mapper.UserLogMapper;
-import HVLO.TEXTRPG.user.mapper.UserMasteryMapper;
+import HVLO.TEXTRPG.user.mapper.*;
 import HVLO.TEXTRPG.user.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +32,7 @@ public class UserService {
     private final UserAchievementsRepository userAchievementsRepository;
     private final UserMasteryRepository userMasteryRepository;
     private final JwtUtil jwtUtil;
-
+    private final UserCombatStatusService userCombatStatusService;
     // 회원가입
     @Transactional
     public void createUser(SignUpRequestDTO dto) {
@@ -94,6 +92,8 @@ public class UserService {
         userAchievementsRepository.save(userAchievements);
         UserMastery userMastery = new UserMastery(savedUser.getId(),1L, JobStatus.RUNNING,1L,1L);
         userMasteryRepository.save(userMastery);
+        UserEquipment userEquipment = new UserEquipment(savedUser.getId(), 1L, false, EquipmentGrade.COMMON);
+        userEquipmentRepository.save(userEquipment);
     }
 
     // 유효성 검사
@@ -124,10 +124,10 @@ public class UserService {
     }
 
 
-    public UserUnitedDTO getUserDTO(Long userId){
+    public UserDTO getUserDTO(Long userId){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GlobalException(ErrorCode.USER_NOT_FOUND));
-        UserUnitedDTO dto = new UserUnitedDTO();
+        UserDTO dto = new UserDTO();
         dto.setUserid(user.getId());
         dto.setUsername(user.getUsername());
         dto.setUserStats(getUserStatsDTO(userId));
@@ -135,7 +135,7 @@ public class UserService {
         dto.setLogs(getUserLogDTOs(userId));
         dto.setEquipments(getUserEquipmentDTO(userId));
         dto.setMastery(getUserMasteryDTO(userId));
-
+        dto.setCombat(userCombatStatusService.getUserCombat(dto));
         return dto;
     }
 

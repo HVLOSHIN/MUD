@@ -9,6 +9,8 @@ import java.util.List;
 public class PassiveSkillDTO {
     private Long jobId;
 
+    private Long passiveId;
+
     private Long nextSkillId;
 
     private Long prevSkillId;

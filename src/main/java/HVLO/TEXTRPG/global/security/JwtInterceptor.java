@@ -44,6 +44,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
             log.info(authHeader);
         }
+
         // Bearer 토큰 검증
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7); // "Bearer " 뒤의 토큰
@@ -60,6 +61,7 @@ public class JwtInterceptor implements HandlerInterceptor {
                 return true;
             }
         }
+
         // 토큰이 유효하지 않거나 없는 경우 에러 응답
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
         return false; // 요청 처리 중단

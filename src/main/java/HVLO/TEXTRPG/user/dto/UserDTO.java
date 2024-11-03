@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Getter @Setter
-public class UserUnitedDTO {
+public class UserDTO {
     private Long userid;
 
     private String username;
@@ -15,12 +15,12 @@ public class UserUnitedDTO {
 
     private UserAchievementsDTO achievements;
 
-    private UserCombatDTO combat;
-
     private List<UserLogDTO> logs;
 
     private List<UserEquipmentDTO> equipments;
 
     private List<UserMasteryDTO> mastery;
+
+   private UserCombatDTO combat;
 
 }
