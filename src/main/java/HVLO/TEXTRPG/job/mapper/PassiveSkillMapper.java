@@ -13,6 +13,7 @@ public class PassiveSkillMapper {
     public static PassiveSkillDTO toDTO(PassiveSkill passiveSkill, List<PassiveSkillEffect> effects) {
         PassiveSkillDTO dto = new PassiveSkillDTO();
         dto.setJobId(passiveSkill.getJobId());
+        dto.setPassiveId(passiveSkill.getId());
         dto.setNextSkillId(passiveSkill.getNextSkillId());
         dto.setPrevSkillId(passiveSkill.getPrevSkillId());
         dto.setSkillLevel(passiveSkill.getSkillLevel());

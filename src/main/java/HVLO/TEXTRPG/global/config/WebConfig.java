@@ -18,14 +18,4 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/api/**"); // JWT 검증이 필요한 경로
     }
-
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**")
-//                .allowedOrigins("http://localhost:3000") // React 앱의 출처
-//                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-//                .allowedHeaders("*, Authorization", "Content-Type", "Accept")
-//                .allowCredentials(true); // 인증 정보 포함 허용
-//
-//    }
 }

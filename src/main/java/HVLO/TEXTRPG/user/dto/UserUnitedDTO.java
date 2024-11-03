@@ -15,6 +15,8 @@ public class UserUnitedDTO {
 
     private UserAchievementsDTO achievements;
 
+    private UserCombatDTO combat;
+
     private List<UserLogDTO> logs;
 
     private List<UserEquipmentDTO> equipments;
