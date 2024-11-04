@@ -9,6 +9,7 @@ public class FieldMapper {
         FieldDTO dto = new FieldDTO();
 
         dto.setId(field.getId());
+        dto.setNextFieldId(field.getNextFieldId());
         dto.setName(field.getName());
         dto.setDescription(field.getDescription());
         dto.setType(field.getType());

@@ -22,4 +22,6 @@ public class Field {
 
     private int minLevel;
 
+    private Long nextFieldId;
+
 }

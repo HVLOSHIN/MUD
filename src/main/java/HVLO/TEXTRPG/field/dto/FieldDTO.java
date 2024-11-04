@@ -9,6 +9,8 @@ public class FieldDTO {
 
     private Long id;
 
+    private Long nextFieldId;
+
     private String name;
 
     private String description;
@@ -16,4 +18,5 @@ public class FieldDTO {
     private FieldType type;
 
     private int minLevel;
+
 }

@@ -17,6 +17,8 @@ public class UserDTO {
 
     private List<UserLogDTO> logs;
 
+    private List<UserFieldDTO> fields;
+
     private List<UserEquipmentDTO> equipments;
 
     private List<UserMasteryDTO> mastery;

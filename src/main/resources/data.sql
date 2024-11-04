@@ -50,5 +50,7 @@ INSERT INTO TEXTRPG.user_mastery (active_skill_masteryexp, job_masteryexp, passi
 (0, 0, 0, null, 1, null, 1, 'NOT_STARTED');
 
 
-INSERT INTO TEXTRPG.field (min_level, description, name, type) VALUES
-(0, '마을 안에 위치한 수련장. 죽을일 없다,', '수련장', 'NORMAL');
+INSERT INTO TEXTRPG.field (min_level, description, name, type, next_field_id) VALUES
+(0, '마을 안에 위치한 수련장. 죽을일 없다,', '수련장', 'NORMAL',2),
+(24, '마을 근교의 낮은 야산', '야산', 'NORMAL',3),
+(64, '야산 깊은 곳의, 고블린들이 이룬 부락', '고블린 부락', 'NORMAL',4);
