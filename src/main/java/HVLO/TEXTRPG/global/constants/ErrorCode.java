@@ -33,7 +33,10 @@ public enum ErrorCode {
 
     PASSIVE_SKILL_EFFECT_NOT_FOUND(HttpStatus.NOT_FOUND, "PASSIVE_SKILL_EFFECT-01","Passive skill effect를 찾을 수 없습니다."),
 
-    JOB_NOT_FOUND(HttpStatus.NOT_FOUND,"JOB-01","Job을 찾을 수 없습니다." );
+    JOB_NOT_FOUND(HttpStatus.NOT_FOUND,"JOB-01","Job을 찾을 수 없습니다." ),
+
+    ENEMY_NOT_FOUND(HttpStatus.NOT_FOUND,"ENEMY-01","Enemy를 찾을 수 없습니다." );
+
 
     private final HttpStatus httpStatus;
     private final String code;
