@@ -1,16 +1,17 @@
-package HVLO.TEXTRPG.enemy.entity;
+package HVLO.TEXTRPG.enemy.dto;
 
 import HVLO.TEXTRPG.global.constants.EnemyType;
-import jakarta.persistence.*;
+import HVLO.TEXTRPG.item.dto.ItemDTO;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Table(name = "enemy")
+import java.util.List;
+
 @Getter @Setter
-public class Enemy {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class EnemyDTO {
+
     private Long id;
 
     private Long fieldId;
@@ -19,7 +20,6 @@ public class Enemy {
 
     private String description;
 
-    @Enumerated(EnumType.STRING)
     private EnemyType enemyType;
 
     private int giveHP;
@@ -48,6 +48,5 @@ public class Enemy {
 
     private int AV;
 
-    // 기술
-
+    private List<ItemDTO> items;
 }

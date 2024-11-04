@@ -54,3 +54,10 @@ INSERT INTO TEXTRPG.field (min_level, description, name, type, next_field_id) VA
 (0, '마을 안에 위치한 수련장. 죽을일 없다,', '수련장', 'NORMAL',2),
 (24, '마을 근교의 낮은 야산', '야산', 'NORMAL',3),
 (64, '야산 깊은 곳의, 고블린들이 이룬 부락', '고블린 부락', 'NORMAL',4);
+
+INSERT INTO TEXTRPG.enemy (ar, av, cd, ct, hp, ma, md, pa, pd, description, dexterity, enemy_type, field_id, givehp, intelligence, name, strength) VALUES
+(30001, 0, 150, 0, 50, 0, 1, 0, 1, '나무로 만들어진 수련용 인형이다.수련의 의미가 있을는지 의문이 들 정도로 연약한 강도를 지녔다.그러나 누구에게나 처음은 있는 법.', 0, 'NORMAL', 1, 1, 0, '나무 인형', 0);
+
+
+INSERT INTO TEXTRPG.item (description, drop_rate, enemy_id, name, price) VALUES
+('나무 인형의 파편. 어딘가엔 요긴하게 쓰이지 않을까?', 20, 1, '나무 쪼가리', 2);
