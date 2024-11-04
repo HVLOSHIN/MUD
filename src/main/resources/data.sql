@@ -48,3 +48,7 @@ INSERT INTO TEXTRPG.job_effect (value, job_id, effect_type, operation) VALUES
 
 INSERT INTO TEXTRPG.user_mastery (active_skill_masteryexp, job_masteryexp, passive_skill_masteryexp, active_skill_id, job_id, passive_skill_id, user_id, status) VALUES
 (0, 0, 0, null, 1, null, 1, 'NOT_STARTED');
+
+
+INSERT INTO TEXTRPG.field (min_level, description, name, type) VALUES
+(0, '마을 안에 위치한 수련장. 죽을일 없다,', '수련장', 'NORMAL');
