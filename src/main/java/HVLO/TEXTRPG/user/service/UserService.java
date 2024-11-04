@@ -2,6 +2,7 @@ package HVLO.TEXTRPG.user.service;
 
 import HVLO.TEXTRPG.equipment.service.EquipmentService;
 import HVLO.TEXTRPG.global.constants.EquipmentGrade;
+import HVLO.TEXTRPG.global.constants.FieldStatus;
 import HVLO.TEXTRPG.global.constants.JobStatus;
 import HVLO.TEXTRPG.global.security.EncryptionUtil;
 import HVLO.TEXTRPG.global.security.JwtUtil;
@@ -39,6 +40,8 @@ public class UserService {
     private final UserCombatStatusService userCombatStatusService;
 
     public final String TIME = "time";
+    private final UserFieldRepository userFieldRepository;
+
     // 회원가입
     @Transactional
     public void createUser(SignUpRequestDTO dto) {
@@ -100,6 +103,11 @@ public class UserService {
         userMasteryRepository.save(userMastery);
         UserEquipment userEquipment = new UserEquipment(savedUser.getId(), 1L, false, EquipmentGrade.COMMON);
         userEquipmentRepository.save(userEquipment);
+
+        UserField userField1 = new UserField(savedUser.getId(),1L, FieldStatus.UNLOCKED);
+        userFieldRepository.save(userField1);
+        UserField userField2 = new UserField(savedUser.getId(),2L, FieldStatus.UNLOCKED);
+        userFieldRepository.save(userField2);
     }
 
     // 유효성 검사
@@ -139,6 +147,7 @@ public class UserService {
         dto.setUserStats(getUserStatsDTO(userId));
         dto.setAchievements(getUserAchievementsDTO(userId));
         dto.setLogs(getUserLogDTOs(userId));
+        dto.setFields(getUserFieldDTOs(userId));
         dto.setEquipments(getUserEquipmentDTO(userId));
         dto.setMastery(getUserMasteryDTO(userId));
         dto.setCombat(userCombatStatusService.getUserCombat(dto));
@@ -159,6 +168,11 @@ public class UserService {
         Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, TIME));
         Page<UserLog> userLogs = userLogRepository.findByUserId(userId, pageable);
         return userLogs.stream().map(UserLogMapper::toDto).collect(Collectors.toList());
+    }
+
+    public List<UserFieldDTO> getUserFieldDTOs(Long userId) {
+        List<UserField> fields = userFieldRepository.findByUserId(userId);
+        return fields.stream().map(UserFieldMapper::toDTO).collect(Collectors.toList());
     }
 
     public List<UserEquipmentDTO> getUserEquipmentDTO(Long userId) {

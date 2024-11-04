@@ -1,15 +1,14 @@
 package HVLO.TEXTRPG.user.controller;
 
-import HVLO.TEXTRPG.user.dto.AccessTokenDTO;
-import HVLO.TEXTRPG.user.dto.LogInRequestDTO;
-import HVLO.TEXTRPG.user.dto.SignUpRequestDTO;
-import HVLO.TEXTRPG.user.dto.UserDTO;
+import HVLO.TEXTRPG.user.dto.*;
 import HVLO.TEXTRPG.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -22,7 +21,10 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserDTO(id));
     }
 
-
+    @GetMapping("/{id}/field")
+    public ResponseEntity<List<UserFieldDTO>> getField(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserFieldDTOs(id));
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<Void> createUser(@Valid @RequestBody SignUpRequestDTO dto) {
