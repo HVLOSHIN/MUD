@@ -14,6 +14,10 @@ import HVLO.TEXTRPG.user.mapper.*;
 import HVLO.TEXTRPG.user.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -33,6 +37,8 @@ public class UserService {
     private final UserMasteryRepository userMasteryRepository;
     private final JwtUtil jwtUtil;
     private final UserCombatStatusService userCombatStatusService;
+
+    public final String TIME = "time";
     // 회원가입
     @Transactional
     public void createUser(SignUpRequestDTO dto) {
@@ -150,7 +156,8 @@ public class UserService {
     }
 
     public List<UserLogDTO> getUserLogDTOs(Long userId) {
-        List<UserLog> userLogs = userLogRepository.findByUserId(userId);
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, TIME));
+        Page<UserLog> userLogs = userLogRepository.findByUserId(userId, pageable);
         return userLogs.stream().map(UserLogMapper::toDto).collect(Collectors.toList());
     }
 
