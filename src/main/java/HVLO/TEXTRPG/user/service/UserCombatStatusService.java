@@ -49,7 +49,7 @@ public class UserCombatStatusService {
         baseStats.put(EffectType.CT, Math.pow(basicDEX, 0.3));
         baseStats.put(EffectType.CD, 150.0);
         baseStats.put(EffectType.AV, Math.pow(basicDEX, 0.25));
-        baseStats.put(EffectType.AR, (double) basicDEX);
+        baseStats.put(EffectType.AR, 0.0);
     }
 
     private void initializeStatsMap(Map<EffectType, Double> statsMap) {
