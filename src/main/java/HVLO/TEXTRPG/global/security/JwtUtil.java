@@ -1,8 +1,12 @@
 package HVLO.TEXTRPG.global.security;
 
+import HVLO.TEXTRPG.global.constants.ErrorCode;
+import HVLO.TEXTRPG.global.exception.GlobalException;
 import HVLO.TEXTRPG.user.entity.User;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
@@ -63,8 +67,12 @@ public class JwtUtil {
                 .getBody();
     }
 
-    // JWT 만료 여부 확인
-    private boolean isTokenExpired(String token) {
-        return extractAllClaims(token).getExpiration().before(new Date());
+    protected boolean isTokenExpired(String token) {
+        try {
+            return extractAllClaims(token).getExpiration().before(new Date());
+        } catch (ExpiredJwtException | MalformedJwtException e) {
+            throw new GlobalException(ErrorCode.NOT_AUTHORIZED);
+        }
+
     }
 }

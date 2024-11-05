@@ -75,7 +75,6 @@ public class UserService {
     // 리프레시 토큰 검증
     public AccessTokenDTO refreshAccessToken(AccessTokenDTO accessTokenDTO) {
         String refreshToken = accessTokenDTO.getRefresh_token();
-
         String loginId = jwtUtil.extractLoginId(refreshToken);
         User user = userRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new GlobalException(ErrorCode.USER_NOT_FOUND));
@@ -83,7 +82,7 @@ public class UserService {
         if(jwtUtil.validateToken(refreshToken, user)){
             // 검증 성공
             String newAccessToken = jwtUtil.generateToken(user);
-            accessTokenDTO.setRefresh_token(newAccessToken);
+            accessTokenDTO.setAccess_token(newAccessToken);
             return accessTokenDTO;
         }
         else {
