@@ -30,23 +30,23 @@ public class Enemy {
 
     private int intelligence;
 
-    private int HP;
+    private double HP;
 
-    private int PA;
+    private double PA;
 
-    private int MA;
+    private double MA;
 
-    private int PD;
+    private double PD;
 
-    private int MD;
+    private double MD;
 
-    private int CT;
+    private double CT;
 
-    private int CD;
+    private double CD;
 
-    private int AR;
+    private double AR;
 
-    private int AV;
+    private double AV;
 
     // 기술
 

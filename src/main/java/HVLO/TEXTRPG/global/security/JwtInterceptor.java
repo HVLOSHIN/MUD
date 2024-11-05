@@ -25,7 +25,8 @@ public class JwtInterceptor implements HandlerInterceptor {
     // 화이트리스트 정의
     private static final List<String> WHITELIST = List.of(
             "/api/user/login",     // 로그인 API
-            "/api/user/signup"     // 회원가입 API
+            "/api/user/signup",  // 회원가입 API
+            "/api/user/refresh"
     );
 
     @Override
@@ -41,26 +42,32 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         // Authorization 헤더에서 JWT 가져오기
         String authHeader = request.getHeader("Authorization");
-        if(authHeader == null || !authHeader.startsWith("Bearer ")) {
-            log.info(authHeader);
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+            return false;
         }
 
-        // Bearer 토큰 검증
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7); // "Bearer " 뒤의 토큰
 
-            // 사용자 ID 추출
-            String loginId = jwtUtil.extractLoginId(token);
 
-            // 사용자 정보 조회
-            User user = userRepository.findByLoginId(loginId)
-                    .orElseThrow(() -> new GlobalException(ErrorCode.USER_NOT_FOUND));
+        String token = authHeader.substring(7); // "Bearer " 뒤의 토큰
 
-            if (jwtUtil.validateToken(token, user)) { // 토큰 검증 메서드 호출
-                // 토큰이 유효하면 다음으로 진행
-                return true;
-            }
+        if (jwtUtil.isTokenExpired(token)) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token expired");
+            return false; // 요청 처리 중단
         }
+
+        // 사용자 ID 추출
+        String loginId = jwtUtil.extractLoginId(token);
+
+        // 사용자 정보 조회
+        User user = userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new GlobalException(ErrorCode.USER_NOT_FOUND));
+
+        if (jwtUtil.validateToken(token, user)) { // 토큰 검증 메서드 호출
+            // 토큰이 유효하면 다음으로 진행
+            return true;
+        }
+
 
         // 토큰이 유효하지 않거나 없는 경우 에러 응답
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");

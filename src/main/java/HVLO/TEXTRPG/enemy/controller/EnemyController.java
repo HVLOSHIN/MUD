@@ -16,8 +16,13 @@ import java.util.List;
 public class EnemyController {
     private final EnemyService enemyService;
 
-    @GetMapping("/{fieldId}")
+    @GetMapping("/field/{fieldId}")
     public ResponseEntity<List<EnemyDTO>> getEnemies(@PathVariable Long fieldId) {
         return ResponseEntity.status(HttpStatus.OK).body(enemyService.findEnemiesByFieldId(fieldId));
+    }
+
+    @GetMapping("/{enemyId}")
+    public ResponseEntity<EnemyDTO> getEnemy(@PathVariable Long enemyId){
+        return ResponseEntity.status(HttpStatus.OK).body(enemyService.findEnemy(enemyId));
     }
 }
