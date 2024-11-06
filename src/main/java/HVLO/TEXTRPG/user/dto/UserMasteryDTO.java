@@ -6,8 +6,6 @@ import HVLO.TEXTRPG.job.dto.JobDTO;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter @Setter
 public class UserMasteryDTO {
     private Long userId;

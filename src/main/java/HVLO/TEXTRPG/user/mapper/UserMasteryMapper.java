@@ -4,8 +4,6 @@ import HVLO.TEXTRPG.job.dto.JobDTO;
 import HVLO.TEXTRPG.user.dto.UserMasteryDTO;
 import HVLO.TEXTRPG.user.entity.UserMastery;
 
-import java.util.List;
-
 public class UserMasteryMapper {
     public static UserMasteryDTO toDTO(UserMastery userMastery, JobDTO jobDTO) {
         UserMasteryDTO dto = new UserMasteryDTO();

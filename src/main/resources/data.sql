@@ -5,14 +5,13 @@ INSERT INTO TEXTRPG.equipment_effect (value, equipment_id, effect_type) VALUES
 (1.8, 1, 'PA'),
 (0.9, 1, 'AR');
 
-
-INSERT INTO TEXTRPG.passive_skill (mastery, requiredap, skill_level, job_id, next_skill_id, prev_skill_id, description, name) VALUES
-(200, 2, 1, 1, 2, null, '인내는 위기상황을 돌파하는데 좋은 무기가 될것이다.', '인내증강I'),
-(1100, 2, 2, 1, 3, 1, '인내는 위기상황을 돌파하는데 좋은 무기가 될것이다.', '인내증강II'),
-(4500, 2, 3, 1, 4, 2, '인내는 위기상황을 돌파하는데 좋은 무기가 될것이다.', '인내증강III'),
-(22000, 2, 4, 1, 5, 3, '인내는 위기상황을 돌파하는데 좋은 무기가 될것이다.', '인내증강IV'),
-(110000, 2, 5, 1, 6, 4, '인내는 위기상황을 돌파하는데 좋은 무기가 될것이다.', '인내증강V'),
-(220000, 2, 6, 1, 7, 5, '인내의 끝에는 무엇이 기다리는가?', '인내증강VI');
+INSERT INTO TEXTRPG.passive_skill (mastery, requiredap, skill_level, job_id, next_skill_id,  description, name) VALUES
+(200, 2, 1, 1, 2, '인내는 위기상황을 돌파하는데 좋은 무기가 될것이다.', '인내증강I'),
+(1100, 2, 2, 1, 3,  '인내는 위기상황을 돌파하는데 좋은 무기가 될것이다.', '인내증강II'),
+(4500, 2, 3, 1, 4,  '인내는 위기상황을 돌파하는데 좋은 무기가 될것이다.', '인내증강III'),
+(22000, 2, 4, 1, 5,  '인내는 위기상황을 돌파하는데 좋은 무기가 될것이다.', '인내증강IV'),
+(110000, 2, 5, 1, 6,  '인내는 위기상황을 돌파하는데 좋은 무기가 될것이다.', '인내증강V'),
+(220000, 2, 6, 1, 7,  '인내의 끝에는 무엇이 기다리는가?', '인내증강VI');
 
 INSERT INTO TEXTRPG.passive_skill_effect (value, skill_id, effect_type, operation) VALUES
 (2, 1, 'HP', 'MULTI_OPERATION'),
@@ -22,8 +21,8 @@ INSERT INTO TEXTRPG.passive_skill_effect (value, skill_id, effect_type, operatio
 (10, 5, 'HP', 'MULTI_OPERATION'),
 (12, 6, 'HP', 'MULTI_OPERATION');
 
-INSERT INTO TEXTRPG.active_skill (chance, mastery, priority, requiredap, skill_level, job_id, next_skill_id, prev_skill_id, description, name, type) VALUES
-(20, 100, 1, 2, 1, 1, null, null, '상대를 강하게 타격한다. 물리공격력*1.5', '강타', 'SPECIAL_ATTACK');
+INSERT INTO TEXTRPG.active_skill (chance, mastery, priority, requiredap, skill_level, job_id, next_skill_id,  description, name, type) VALUES
+(20, 100, 1, 2, 1, 1, null, '상대를 강하게 타격한다. 물리공격력*1.5', '강타', 'SPECIAL_ATTACK');
 
 
 INSERT INTO TEXTRPG.active_skill_effect (value, skill_id, effect_type, operation) VALUES

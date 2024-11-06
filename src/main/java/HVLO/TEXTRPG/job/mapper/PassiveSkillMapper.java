@@ -15,7 +15,6 @@ public class PassiveSkillMapper {
         dto.setJobId(passiveSkill.getJobId());
         dto.setPassiveId(passiveSkill.getId());
         dto.setNextSkillId(passiveSkill.getNextSkillId());
-        dto.setPrevSkillId(passiveSkill.getPrevSkillId());
         dto.setSkillLevel(passiveSkill.getSkillLevel());
         dto.setName(passiveSkill.getName());
         dto.setDescription(passiveSkill.getDescription());

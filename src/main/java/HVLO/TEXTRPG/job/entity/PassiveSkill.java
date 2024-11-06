@@ -16,8 +16,6 @@ public class PassiveSkill {
 
     private Long nextSkillId;
 
-    private Long prevSkillId;
-
     private Integer skillLevel;
 
     private String name;

@@ -264,7 +264,7 @@ public class UserService {
 
     public List<UserMasteryDTO> getUserMasteryDTO(Long userId) {
         List<UserMastery> masteries = userMasteryRepository.findByUserId(userId);
-        return masteries.stream().map(userMastery -> UserMasteryMapper.toDTO(userMastery,
-                jobService.getJobDTOById(userMastery.getJobId()))).collect(Collectors.toList());
+        return masteries.stream().map(userMastery -> UserMasteryMapper.toDTO(userMastery, jobService.getJobDTOById(userMastery.getJobId(), userMastery.getPassiveSkillId(), userMastery.getActiveSkillId())))
+                .collect(Collectors.toList());
     }
 }
