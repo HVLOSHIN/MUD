@@ -105,7 +105,7 @@ public class UserService {
         userAchievementsRepository.save(userAchievements);
         UserMastery userMastery = new UserMastery(savedUser.getId(), 1L, JobStatus.RUNNING, 1L, 1L, SkillStatus.RUNNING, SkillStatus.RUNNING);
         userMasteryRepository.save(userMastery);
-        UserEquipment userEquipment = new UserEquipment(savedUser.getId(), 1L, false, EquipmentGrade.COMMON);
+        UserEquipment userEquipment = new UserEquipment(savedUser.getId(), 1L, true, EquipmentGrade.COMMON);
         userEquipmentRepository.save(userEquipment);
 
         UserField userField1 = new UserField(savedUser.getId(), 1L, FieldStatus.UNLOCKED);
@@ -127,6 +127,7 @@ public class UserService {
         }
     }
 
+    // 로그인 로그 업데이트
     private void logUpdate(LogInRequestDTO loginRequestDTO, User target) {
         UserLog userLog = new UserLog();
         userLog.setUserId(target.getId());
@@ -151,6 +152,8 @@ public class UserService {
         userStatsRepository.save(userStats);
     }
 
+    // EXP 업데이트
+    @Transactional
     public void updateUserEXP(EXPUpdateDTO updateDTO) {
         List<UserMastery> masteries = userMasteryRepository.findByUserId(updateDTO.getUserId());
         List<UserMastery> updatedMasteries = new ArrayList<>();
@@ -216,6 +219,18 @@ public class UserService {
             }
         }
         userMasteryRepository.saveAll(updatedMasteries);
+    }
+
+    // TODO : Achievement 업데이트
+    public void updateUserCombatAchievement(AchieveUpdateDTO updateDTO) {
+        UserAchievements userAchievements = userAchievementsRepository.findByUserId(updateDTO.getUserId())
+                .orElseThrow(() -> new GlobalException(ErrorCode.USER_ACHIEVEMENTS_NOT_FOUND));
+        userAchievements.setTotalDamage(userAchievements.getTotalDamage() + updateDTO.getTotalDamage());
+        if(updateDTO.getMaxDamage() > userAchievements.getMaxDamage()){
+            userAchievements.setMaxDamage(updateDTO.getMaxDamage());
+        }
+        userAchievements.setKillCount(userAchievements.getKillCount() + updateDTO.getKillCount());
+        userAchievementsRepository.save(userAchievements);
     }
 
     public UserDTO getUserDTO(Long userId) {

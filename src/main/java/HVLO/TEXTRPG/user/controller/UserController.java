@@ -55,4 +55,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @PutMapping("/achieve")
+    public ResponseEntity<Void> updateUserAchieve(@RequestBody AchieveUpdateDTO achieveUpdateDTO){
+        userService.updateUserCombatAchievement(achieveUpdateDTO);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
 }
