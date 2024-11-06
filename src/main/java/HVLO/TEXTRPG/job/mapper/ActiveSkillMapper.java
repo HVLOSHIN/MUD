@@ -13,7 +13,6 @@ public class ActiveSkillMapper {
         ActiveSkillDTO dto = new ActiveSkillDTO();
         dto.setJobId(activeSkill.getJobId());
         dto.setNextSkillId(activeSkill.getNextSkillId());
-        dto.setPrevSkillId(activeSkill.getPrevSkillId());
         dto.setSkillLevel(activeSkill.getSkillLevel());
         dto.setName(activeSkill.getName());
         dto.setDescription(activeSkill.getDescription());

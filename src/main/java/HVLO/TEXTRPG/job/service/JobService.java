@@ -4,10 +4,12 @@ import HVLO.TEXTRPG.global.constants.ErrorCode;
 import HVLO.TEXTRPG.global.exception.GlobalException;
 import HVLO.TEXTRPG.job.dto.ActiveSkillDTO;
 import HVLO.TEXTRPG.job.dto.JobDTO;
+import HVLO.TEXTRPG.job.dto.JobTotalDTO;
 import HVLO.TEXTRPG.job.dto.PassiveSkillDTO;
 import HVLO.TEXTRPG.job.entity.*;
 import HVLO.TEXTRPG.job.mapper.ActiveSkillMapper;
 import HVLO.TEXTRPG.job.mapper.JobMapper;
+import HVLO.TEXTRPG.job.mapper.JobTotalMapper;
 import HVLO.TEXTRPG.job.mapper.PassiveSkillMapper;
 import HVLO.TEXTRPG.job.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +29,23 @@ public class JobService {
     private final JobEffectRepository jobEffectRepository;
 
 
-    public JobDTO getJobDTOById(Long jobId) {
+    public JobTotalDTO getJobTotalDTOById(Long jobId) {
         Job job = jobRepository.findById(jobId)
                 .orElseThrow(() -> new GlobalException(ErrorCode.JOB_NOT_FOUND));
         List<ActiveSkillDTO> activeSkills = findActiveSkillDTOsByJobId(jobId);
         List<PassiveSkillDTO> passiveSkills = findPassiveSkillDTOsByJobId(jobId);
         List<JobEffect> jobEffects = jobEffectRepository.findAllByJobId(jobId);
 
-        return JobMapper.toDTO(job, passiveSkills, activeSkills, jobEffects);
+        return JobTotalMapper.toDTO(job, passiveSkills, activeSkills, jobEffects);
+    }
+
+    public JobDTO getJobDTOById(Long jobId, Long passiveSkillId, Long activeSkillId) {
+        Job job = jobRepository.findById(jobId)
+                .orElseThrow(() -> new GlobalException(ErrorCode.JOB_NOT_FOUND));
+        PassiveSkillDTO passiveSkillDTO = findPassiveSkillById(passiveSkillId);
+        ActiveSkillDTO activeSkillDTO = findActiveSkillById(activeSkillId);
+        List<JobEffect> jobEffects = jobEffectRepository.findAllByJobId(jobId);
+        return JobMapper.toDTO(job, passiveSkillDTO, activeSkillDTO, jobEffects);
     }
 
     public List<ActiveSkillDTO> findActiveSkillDTOsByJobId(Long jobId) {

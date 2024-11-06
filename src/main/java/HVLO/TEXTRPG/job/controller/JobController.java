@@ -15,12 +15,4 @@ import org.springframework.web.bind.annotation.RestController;
 public class JobController {
 
     private final JobService jobService;
-
-    @GetMapping
-    public ResponseEntity<JobDTO> getJob() {
-        return ResponseEntity.ok(jobService.getJobDTOById(1L));
-    }
-
-
-
 }

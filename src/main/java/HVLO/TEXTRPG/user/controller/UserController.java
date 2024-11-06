@@ -43,4 +43,22 @@ public class UserController {
     public ResponseEntity<AccessTokenDTO> refreshAccessToken(@RequestBody AccessTokenDTO accessTokenDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.refreshAccessToken(accessTokenDTO));
     }
+
+    @PutMapping("/hp")
+    public ResponseEntity<Void> updateUserHp(@RequestBody HPUpdateDTO hpUpdateDTO) {
+        userService.updateUserHp(hpUpdateDTO);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+    @PutMapping("/exp")
+    public ResponseEntity<Void> updateUserEXP(@RequestBody EXPUpdateDTO expUpdateDTO){
+        userService.updateUserEXP(expUpdateDTO);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PutMapping("/achieve")
+    public ResponseEntity<Void> updateUserAchieve(@RequestBody AchieveUpdateDTO achieveUpdateDTO){
+        userService.updateUserCombatAchievement(achieveUpdateDTO);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
 }

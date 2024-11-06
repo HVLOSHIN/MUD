@@ -1,11 +1,10 @@
 package HVLO.TEXTRPG.user.dto;
 
 import HVLO.TEXTRPG.global.constants.JobStatus;
+import HVLO.TEXTRPG.global.constants.SkillStatus;
 import HVLO.TEXTRPG.job.dto.JobDTO;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter @Setter
 public class UserMasteryDTO {
@@ -13,7 +12,11 @@ public class UserMasteryDTO {
 
     private Long JobId;
 
-    private JobStatus status;
+    private JobStatus jobStatus;
+
+    private SkillStatus passiveSkillStatus;
+
+    private SkillStatus activeSkillStatus;
 
     private Integer jobMasteryEXP;
 

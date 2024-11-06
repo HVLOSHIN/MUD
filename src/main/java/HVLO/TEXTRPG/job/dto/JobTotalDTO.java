@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Getter @Setter
-public class JobDTO {
+public class JobTotalDTO {
 
     private String name;
 
@@ -22,7 +22,7 @@ public class JobDTO {
 
     List<JobEffectDTO> effects;
 
-    PassiveSkillDTO passiveSkills;
+    List<PassiveSkillDTO> passiveSkills;
 
-    ActiveSkillDTO activeSkills;
+    List<ActiveSkillDTO> activeSkills;
 }
