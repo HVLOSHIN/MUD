@@ -1,5 +1,6 @@
 package HVLO.TEXTRPG.user.repository;
 
+import HVLO.TEXTRPG.user.dto.ActionPointDTO;
 import HVLO.TEXTRPG.user.dto.UserStatsDTO;
 import HVLO.TEXTRPG.user.entity.UserStats;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +19,10 @@ public interface UserStatsRepository extends JpaRepository<UserStats, Long> {
             "us.AP, us.hp, us.strength, us.dexterity, us.intelligence) " +
             "FROM UserStats us WHERE us.userId = :userId")
     Optional<UserStatsDTO> findUserStatsDTOByUserId(@Param("userId") Long userId);
+
+
+    @Query("SELECT new HVLO.TEXTRPG.user.dto.ActionPointDTO(" +
+            "us.userId, us.currentActionPoints, us.maxActionPoints)" +
+            "FROM UserStats  us WHERE us.userId = :userId")
+    Optional<ActionPointDTO> findActionPointDTOByUserId(@Param("userId") Long userId);
 }

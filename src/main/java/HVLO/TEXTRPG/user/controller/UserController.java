@@ -61,4 +61,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @GetMapping("action-points")
+    public ResponseEntity<ActionPointDTO> getActionPoints(@RequestParam Long userId){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getActionPoints(userId));
+    }
+
+    @PostMapping("action-points")
+    public ResponseEntity<ActionPointDTO> updateActionPoints(@RequestParam Long userId){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateActionPoints(userId));
+    }
 }

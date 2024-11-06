@@ -233,6 +233,28 @@ public class UserService {
         userAchievementsRepository.save(userAchievements);
     }
 
+    public ActionPointDTO getActionPoints(Long userId) {
+        return userStatsRepository.findActionPointDTOByUserId(userId)
+                .orElseThrow(() -> new GlobalException(ErrorCode.USER_STATS_NOT_FOUND));
+    }
+
+
+    // 행동력
+    @Transactional
+    public ActionPointDTO updateActionPoints(Long userId) {
+        UserStats userStats = userStatsRepository.findByUserId(userId)
+                .orElseThrow(() -> new GlobalException(ErrorCode.USER_STATS_NOT_FOUND));
+        if(userStats.getCurrentActionPoints() + 1 <= userStats.getMaxActionPoints()){
+            userStats.setCurrentActionPoints(userStats.getCurrentActionPoints() + 1);
+            userStatsRepository.save(userStats);
+        }
+        ActionPointDTO dto = new ActionPointDTO();
+        dto.setUserId(userId);
+        dto.setCurrentActionPoints(userStats.getCurrentActionPoints());
+        dto.setMaxActionPoints(userStats.getMaxActionPoints());
+        return dto;
+    }
+
     public UserDTO getUserDTO(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GlobalException(ErrorCode.USER_NOT_FOUND));
@@ -282,4 +304,7 @@ public class UserService {
         return masteries.stream().map(userMastery -> UserMasteryMapper.toDTO(userMastery, jobService.getJobDTOById(userMastery.getJobId(), userMastery.getPassiveSkillId(), userMastery.getActiveSkillId())))
                 .collect(Collectors.toList());
     }
+
+
+
 }
