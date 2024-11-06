@@ -133,6 +133,16 @@ public class UserService {
         return user.getPassword().equals(hashedInputPassword);
     }
 
+    // HP 업데이트
+    @Transactional
+    public void updateUserHp(HPUpdateDTO updateDTO) {
+        UserStats userStats = userStatsRepository.findByUserId(updateDTO.getUserId())
+                .orElseThrow(() -> new GlobalException(ErrorCode.USER_STATS_NOT_FOUND));
+        userStats.setHp(updateDTO.getNewHp());
+        userStats.setCurrentActionPoints(userStats.getCurrentActionPoints() - 1);
+        userStatsRepository.save(userStats);
+    }
+
 
     public UserDTO getUserDTO(Long userId){
         User user = userRepository.findById(userId)

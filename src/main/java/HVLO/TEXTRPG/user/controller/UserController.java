@@ -43,4 +43,11 @@ public class UserController {
     public ResponseEntity<AccessTokenDTO> refreshAccessToken(@RequestBody AccessTokenDTO accessTokenDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.refreshAccessToken(accessTokenDTO));
     }
+
+    @PutMapping("/hp")
+    public ResponseEntity<Void> updateUserHp(@RequestBody HPUpdateDTO hpUpdateDTO) {
+        userService.updateUserHp(hpUpdateDTO);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
 }

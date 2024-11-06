@@ -67,7 +67,7 @@ public class UserCombatStatusService {
 
 
                 for (PassiveSkillDTO passiveSkill : masteryDTO.getJob().getPassiveSkills()) {
-                    if (passiveSkill.getPassiveId().equals(masteryDTO.getPassiveSkillId()) || masteryDTO.getPassiveSkillStatus() == SkillStatus.RUNNING ) {
+                    if (passiveSkill.getPassiveId().equals(masteryDTO.getPassiveSkillId()) && (masteryDTO.getPassiveSkillStatus() == SkillStatus.RUNNING) ) {
                         for (PassiveSkillEffectDTO skillEffect : passiveSkill.getEffects()) {
                             applyEffect(skillStats, skillEffect);
                         }
