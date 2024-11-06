@@ -69,7 +69,7 @@ public class UserCombatStatusService {
                 // 패시브 보너스 가져오기
                 for (PassiveSkillDTO passiveSkill : masteryDTO.getJob().getPassiveSkills()) {
                     if (passiveSkill.getPassiveId().equals(masteryDTO.getPassiveSkillId()) &&
-                            (masteryDTO.getPassiveSkillStatus() == SkillStatus.RUNNING)) {
+                            (masteryDTO.getPassiveSkillStatus() == SkillStatus.RUNNING || masteryDTO.getPassiveSkillStatus() == SkillStatus.MASTER_RUNNING)) {
 
                         for (PassiveSkillEffectDTO skillEffect : passiveSkill.getEffects()) {
                             applyEffect(skillStats, skillEffect);
