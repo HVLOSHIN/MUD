@@ -3,7 +3,7 @@ package HVLO.TEXTRPG.user.service;
 import HVLO.TEXTRPG.equipment.dto.EquipmentEffectDTO;
 import HVLO.TEXTRPG.global.constants.EffectType;
 import HVLO.TEXTRPG.global.constants.JobStatus;
-import HVLO.TEXTRPG.global.constants.Operation;
+import HVLO.TEXTRPG.global.constants.SkillStatus;
 import HVLO.TEXTRPG.job.dto.JobEffectDTO;
 import HVLO.TEXTRPG.job.dto.PassiveSkillDTO;
 import HVLO.TEXTRPG.job.dto.PassiveSkillEffectDTO;
@@ -60,14 +60,14 @@ public class UserCombatStatusService {
 
     private void getJobStatus(UserDTO user) {
         for (UserMasteryDTO masteryDTO : user.getMastery()) {
-            if (masteryDTO.getStatus() == JobStatus.RUNNING || masteryDTO.getStatus() == JobStatus.MASTER) {
+            if (masteryDTO.getJobStatus() == JobStatus.RUNNING || masteryDTO.getJobStatus() == JobStatus.MASTER) {
                 for (JobEffectDTO effect : masteryDTO.getJob().getEffects()) {
                     applyEffect(jobStats, effect);
                 }
 
 
                 for (PassiveSkillDTO passiveSkill : masteryDTO.getJob().getPassiveSkills()) {
-                    if (passiveSkill.getPassiveId().equals(masteryDTO.getPassiveSkillId())) {
+                    if (passiveSkill.getPassiveId().equals(masteryDTO.getPassiveSkillId()) || masteryDTO.getPassiveSkillStatus() == SkillStatus.RUNNING ) {
                         for (PassiveSkillEffectDTO skillEffect : passiveSkill.getEffects()) {
                             applyEffect(skillStats, skillEffect);
                         }
@@ -76,7 +76,6 @@ public class UserCombatStatusService {
             }
         }
     }
-
 
     private void getEquipmentStatus(UserDTO user) {
         for (UserEquipmentDTO equipment : user.getEquipments()) {
@@ -87,8 +86,6 @@ public class UserCombatStatusService {
             }
         }
     }
-
-
 
     private void applyEffect(Map<EffectType, Double> statsMap, JobEffectDTO effect) {
         statsMap.merge(effect.getEffectType(), effect.getValue(), Double::sum);
@@ -101,16 +98,5 @@ public class UserCombatStatusService {
 
     private void applyEffect(Map<EffectType, Double> statsMap, PassiveSkillEffectDTO skillEffect) {
         statsMap.merge(skillEffect.getEffectType(), skillEffect.getValue(), Double::sum);
-//        double value = skillEffect.getValue();
-//        if (skillEffect.getOperation() == Operation.MULTI_OPERATION) {
-//            if(value == 0){
-//                return;
-//            }
-//            value = 1 + (value * 0.01);
-//        }
-//        statsMap.merge(skillEffect.getEffectType(), value, (existingValue, newValue) ->
-//                skillEffect.getOperation() == Operation.SUM_OPERATION
-//                        ? existingValue + newValue
-//                        : existingValue * newValue);
     }
 }

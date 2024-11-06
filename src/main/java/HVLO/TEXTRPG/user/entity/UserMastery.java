@@ -1,6 +1,7 @@
 package HVLO.TEXTRPG.user.entity;
 
 import HVLO.TEXTRPG.global.constants.JobStatus;
+import HVLO.TEXTRPG.global.constants.SkillStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +23,13 @@ public class UserMastery {
     private Long JobId;
 
     @Enumerated(EnumType.STRING)
-    private JobStatus status = JobStatus.NOT_STARTED;
+    private JobStatus jobStatus = JobStatus.NOT_STARTED;
+
+    @Enumerated(EnumType.STRING)
+    private SkillStatus passiveSkillStatus = SkillStatus.NOT_STARTED;
+
+    @Enumerated(EnumType.STRING)
+    private SkillStatus activeSkillStatus = SkillStatus.NOT_STARTED;
 
     private Integer jobMasteryEXP = 0;
 
@@ -35,11 +42,13 @@ public class UserMastery {
     private Integer passiveSkillMasteryEXP = 0;
 
 
-    public UserMastery(Long userId, Long jobId, JobStatus status, Long activeSkillId, Long passiveSkillId) {
+    public UserMastery(Long userId, Long jobId, JobStatus status, Long activeSkillId, Long passiveSkillId, SkillStatus passiveSkillStatus, SkillStatus activeSkillStatus) {
         this.userId = userId;
         JobId = jobId;
-        this.status = status;
+        this.jobStatus = status;
         this.activeSkillId = activeSkillId;
         this.passiveSkillId = passiveSkillId;
+        this.passiveSkillStatus = passiveSkillStatus;
+        this.activeSkillStatus = activeSkillStatus;
     }
 }

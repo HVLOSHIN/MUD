@@ -1,12 +1,9 @@
 package HVLO.TEXTRPG.user.service;
 
 import HVLO.TEXTRPG.equipment.service.EquipmentService;
-import HVLO.TEXTRPG.global.constants.EquipmentGrade;
-import HVLO.TEXTRPG.global.constants.FieldStatus;
-import HVLO.TEXTRPG.global.constants.JobStatus;
+import HVLO.TEXTRPG.global.constants.*;
 import HVLO.TEXTRPG.global.security.EncryptionUtil;
 import HVLO.TEXTRPG.global.security.JwtUtil;
-import HVLO.TEXTRPG.global.constants.ErrorCode;
 import HVLO.TEXTRPG.global.exception.GlobalException;
 import HVLO.TEXTRPG.job.service.JobService;
 import HVLO.TEXTRPG.user.dto.*;
@@ -98,7 +95,7 @@ public class UserService {
         UserAchievements userAchievements = new UserAchievements();
         userAchievements.setUserId(savedUser.getId());
         userAchievementsRepository.save(userAchievements);
-        UserMastery userMastery = new UserMastery(savedUser.getId(),1L, JobStatus.RUNNING,1L,1L);
+        UserMastery userMastery = new UserMastery(savedUser.getId(),1L, JobStatus.RUNNING,1L,1L, SkillStatus.NOT_STARTED, SkillStatus.NOT_STARTED);
         userMasteryRepository.save(userMastery);
         UserEquipment userEquipment = new UserEquipment(savedUser.getId(), 1L, false, EquipmentGrade.COMMON);
         userEquipmentRepository.save(userEquipment);

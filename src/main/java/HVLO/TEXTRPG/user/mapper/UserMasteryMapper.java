@@ -11,7 +11,9 @@ public class UserMasteryMapper {
         UserMasteryDTO dto = new UserMasteryDTO();
         dto.setUserId(userMastery.getUserId());
         dto.setJobId(userMastery.getJobId());
-        dto.setStatus(userMastery.getStatus());
+        dto.setJobStatus(userMastery.getJobStatus());
+        dto.setPassiveSkillStatus(userMastery.getPassiveSkillStatus());
+        dto.setActiveSkillStatus(userMastery.getActiveSkillStatus());
         dto.setJobMasteryEXP(userMastery.getJobMasteryEXP());
         dto.setActiveSkillId(userMastery.getActiveSkillId());
         dto.setActiveSkillMasteryEXP(userMastery.getActiveSkillMasteryEXP());

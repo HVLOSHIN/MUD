@@ -5,17 +5,6 @@ INSERT INTO TEXTRPG.equipment_effect (value, equipment_id, effect_type) VALUES
 (1.8, 1, 'PA'),
 (0.9, 1, 'AR');
 
-INSERT INTO TEXTRPG.users (created_at, updated_at, login_id, username, password, role, salt) VALUES
-('2024-10-31 18:09:57', '2024-10-31 18:10:00', 'test', 'test', 'test', 'ADMIN', 'test');
-
-INSERT INTO TEXTRPG.user_stats (ap, current_action_points, dexterity, gold, hp, intelligence, level, max_action_points, strength, user_id) VALUES
-(5, 100, 10, 0, 10, 10, 1, 100, 10, 1);
-
-INSERT INTO TEXTRPG.user_achievements (kill_count, max_damage, used_hp, total_damage, total_gold, used_gold, user_id) VALUES
-(0, 0, 0, 0, 0, 0, 1);
-
-INSERT INTO TEXTRPG.user_equipment (is_equipped, equipment_id, user_id, grade) VALUES
-(true, 1, 1, 'RARE');
 
 INSERT INTO TEXTRPG.passive_skill (mastery, requiredap, skill_level, job_id, next_skill_id, prev_skill_id, description, name) VALUES
 (200, 2, 1, 1, 2, null, '인내는 위기상황을 돌파하는데 좋은 무기가 될것이다.', '인내증강I'),
@@ -45,9 +34,6 @@ INSERT INTO TEXTRPG.job (mastery, required_dex, required_int, required_str, desc
 
 INSERT INTO TEXTRPG.job_effect (value, job_id, effect_type, operation) VALUES
 (5, 1, 'HP', 'SUM_OPERATION');
-
-INSERT INTO TEXTRPG.user_mastery (active_skill_masteryexp, job_masteryexp, passive_skill_masteryexp, active_skill_id, job_id, passive_skill_id, user_id, status) VALUES
-(0, 0, 0, null, 1, null, 1, 'NOT_STARTED');
 
 
 INSERT INTO TEXTRPG.field (min_level, description, name, type, next_field_id) VALUES
