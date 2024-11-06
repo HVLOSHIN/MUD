@@ -5,8 +5,12 @@ import HVLO.TEXTRPG.global.constants.*;
 import HVLO.TEXTRPG.global.security.EncryptionUtil;
 import HVLO.TEXTRPG.global.security.JwtUtil;
 import HVLO.TEXTRPG.global.exception.GlobalException;
+import HVLO.TEXTRPG.job.entity.ActiveSkill;
 import HVLO.TEXTRPG.job.entity.Job;
+import HVLO.TEXTRPG.job.entity.PassiveSkill;
+import HVLO.TEXTRPG.job.repository.ActiveSkillRepository;
 import HVLO.TEXTRPG.job.repository.JobRepository;
+import HVLO.TEXTRPG.job.repository.PassiveSkillRepository;
 import HVLO.TEXTRPG.job.service.JobService;
 import HVLO.TEXTRPG.user.dto.*;
 import HVLO.TEXTRPG.user.entity.*;
@@ -21,6 +25,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +46,8 @@ public class UserService {
     public final String TIME = "time";
     private final UserFieldRepository userFieldRepository;
     private final JobRepository jobRepository;
+    private final PassiveSkillRepository passiveSkillRepository;
+    private final ActiveSkillRepository activeSkillRepository;
 
     // 회원가입
     @Transactional
@@ -66,8 +73,7 @@ public class UserService {
             // 로그인 성공 로직
             logUpdate(loginRequestDTO, target);
             return new AccessTokenDTO(jwtUtil.generateToken(target), jwtUtil.generateRefreshToken(target), target.getId());
-        }
-        else {
+        } else {
             throw new GlobalException(ErrorCode.PASSWORDS_DO_NOT_MATCH);
         }
     }
@@ -79,13 +85,12 @@ public class UserService {
         User user = userRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new GlobalException(ErrorCode.USER_NOT_FOUND));
         // 검증 로직
-        if(jwtUtil.validateToken(refreshToken, user)){
+        if (jwtUtil.validateToken(refreshToken, user)) {
             // 검증 성공
             String newAccessToken = jwtUtil.generateToken(user);
             accessTokenDTO.setAccess_token(newAccessToken);
             return accessTokenDTO;
-        }
-        else {
+        } else {
             throw new GlobalException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
     }
@@ -98,26 +103,26 @@ public class UserService {
         UserAchievements userAchievements = new UserAchievements();
         userAchievements.setUserId(savedUser.getId());
         userAchievementsRepository.save(userAchievements);
-        UserMastery userMastery = new UserMastery(savedUser.getId(),1L, JobStatus.RUNNING,1L,1L, SkillStatus.NOT_STARTED, SkillStatus.NOT_STARTED);
+        UserMastery userMastery = new UserMastery(savedUser.getId(), 1L, JobStatus.RUNNING, 1L, 1L, SkillStatus.RUNNING, SkillStatus.RUNNING);
         userMasteryRepository.save(userMastery);
         UserEquipment userEquipment = new UserEquipment(savedUser.getId(), 1L, false, EquipmentGrade.COMMON);
         userEquipmentRepository.save(userEquipment);
 
-        UserField userField1 = new UserField(savedUser.getId(),1L, FieldStatus.UNLOCKED);
+        UserField userField1 = new UserField(savedUser.getId(), 1L, FieldStatus.UNLOCKED);
         userFieldRepository.save(userField1);
-        UserField userField2 = new UserField(savedUser.getId(),2L, FieldStatus.UNLOCKED);
+        UserField userField2 = new UserField(savedUser.getId(), 2L, FieldStatus.UNLOCKED);
         userFieldRepository.save(userField2);
     }
 
     // 유효성 검사
     private void validateSignUp(SignUpRequestDTO dto) {
-        if(userRepository.existsByLoginId(dto.getLoginId())) {
+        if (userRepository.existsByLoginId(dto.getLoginId())) {
             throw new GlobalException(ErrorCode.ID_ALREADY_EXISTS);
         }
-        if(userRepository.existsByUsername(dto.getUsername())) {
+        if (userRepository.existsByUsername(dto.getUsername())) {
             throw new GlobalException(ErrorCode.NICKNAME_ALREADY_EXISTS);
         }
-        if(!dto.getPassword().equals(dto.getConfirmPassword())) {
+        if (!dto.getPassword().equals(dto.getConfirmPassword())) {
             throw new GlobalException(ErrorCode.PASSWORDS_DO_NOT_MATCH);
         }
     }
@@ -146,28 +151,74 @@ public class UserService {
         userStatsRepository.save(userStats);
     }
 
-    // EXP 업데이트
     public void updateUserEXP(EXPUpdateDTO updateDTO) {
         List<UserMastery> masteries = userMasteryRepository.findByUserId(updateDTO.getUserId());
+        List<UserMastery> updatedMasteries = new ArrayList<>();
+
         // 직업 숙련도 업데이트
         for (UserMastery mastery : masteries) {
-            if(mastery.getJobStatus() == JobStatus.RUNNING){
+            if (mastery.getJobStatus() == JobStatus.RUNNING) {
                 Job job = jobRepository.findById(mastery.getJobId())
                         .orElseThrow(() -> new GlobalException(ErrorCode.JOB_NOT_FOUND));
                 mastery.setJobMasteryEXP(mastery.getJobMasteryEXP() + updateDTO.getQuantity());
-                if(mastery.getJobMasteryEXP() >= job.getMastery()){
+
+                if (mastery.getJobMasteryEXP() >= job.getMastery()) {
                     mastery.setJobMasteryEXP(job.getMastery());
                     mastery.setJobStatus(JobStatus.MASTER_RUNNING);
                 }
-                userMasteryRepository.save(mastery);
+                updatedMasteries.add(mastery); // 변경 사항을 추가
             }
         }
+        // 패시브 숙련도 업데이트
+        for (UserMastery mastery : masteries) {
+            if (mastery.getPassiveSkillStatus() == SkillStatus.RUNNING &&
+                    (mastery.getJobStatus() == JobStatus.RUNNING ||
+                            mastery.getJobStatus() == JobStatus.MASTER_RUNNING ||
+                            mastery.getJobStatus() == JobStatus.MASTER)) {
 
+                PassiveSkill passiveSkill = passiveSkillRepository.findById(mastery.getPassiveSkillId())
+                        .orElseThrow(() -> new GlobalException(ErrorCode.PASSIVE_SKILL_NOT_FOUND));
+                mastery.setPassiveSkillMasteryEXP(mastery.getPassiveSkillMasteryEXP() + updateDTO.getQuantity());
 
+                if (mastery.getPassiveSkillMasteryEXP() >= passiveSkill.getMastery()) {
+                    mastery.setPassiveSkillMasteryEXP(passiveSkill.getMastery());
+                    if (passiveSkill.getNextSkillId() != null) {
+                        mastery.setPassiveSkillStatus(SkillStatus.MASTER);
+                        mastery.setPassiveSkillId(passiveSkill.getNextSkillId());
+                    } else {
+                        mastery.setPassiveSkillStatus(SkillStatus.MASTER_RUNNING);
+                    }
+                }
+                updatedMasteries.add(mastery);
+            }
+        }
+        // 액티브 숙련도 업데이트
+        for (UserMastery mastery : masteries) {
+            if (mastery.getActiveSkillStatus() == SkillStatus.RUNNING &&
+                    (mastery.getJobStatus() == JobStatus.RUNNING ||
+                            mastery.getJobStatus() == JobStatus.MASTER_RUNNING ||
+                            mastery.getJobStatus() == JobStatus.MASTER)) {
+
+                ActiveSkill activeSkill = activeSkillRepository.findById(mastery.getActiveSkillId())
+                        .orElseThrow(() -> new GlobalException(ErrorCode.ACTIVE_SKILL_NOT_FOUND));
+                mastery.setActiveSkillMasteryEXP(mastery.getActiveSkillMasteryEXP() + updateDTO.getQuantity());
+
+                if (mastery.getActiveSkillMasteryEXP() >= activeSkill.getMastery()) {
+                    mastery.setActiveSkillMasteryEXP(activeSkill.getMastery());
+                    if (activeSkill.getNextSkillId() != null) {
+                        mastery.setActiveSkillStatus(SkillStatus.MASTER);
+                        mastery.setActiveSkillId(activeSkill.getNextSkillId());
+                    } else {
+                        mastery.setActiveSkillStatus(SkillStatus.MASTER_RUNNING);
+                    }
+                }
+                updatedMasteries.add(mastery);
+            }
+        }
+        userMasteryRepository.saveAll(updatedMasteries);
     }
 
-
-    public UserDTO getUserDTO(Long userId){
+    public UserDTO getUserDTO(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GlobalException(ErrorCode.USER_NOT_FOUND));
         UserDTO dto = new UserDTO();
