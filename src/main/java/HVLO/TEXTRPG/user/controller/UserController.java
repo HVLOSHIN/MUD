@@ -49,5 +49,10 @@ public class UserController {
         userService.updateUserHp(hpUpdateDTO);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+    @PutMapping("/exp")
+    public ResponseEntity<Void> updateUserEXP(@RequestBody EXPUpdateDTO expUpdateDTO){
+        userService.updateUserEXP(expUpdateDTO);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 
 }

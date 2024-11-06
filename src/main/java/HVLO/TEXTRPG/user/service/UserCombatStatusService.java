@@ -59,15 +59,18 @@ public class UserCombatStatusService {
     }
 
     private void getJobStatus(UserDTO user) {
+        // 직업 보너스 가져오기
         for (UserMasteryDTO masteryDTO : user.getMastery()) {
-            if (masteryDTO.getJobStatus() == JobStatus.RUNNING || masteryDTO.getJobStatus() == JobStatus.MASTER) {
+            if (masteryDTO.getJobStatus() == JobStatus.RUNNING || masteryDTO.getJobStatus() == JobStatus.MASTER_RUNNING  || masteryDTO.getJobStatus() == JobStatus.MASTER) {
                 for (JobEffectDTO effect : masteryDTO.getJob().getEffects()) {
                     applyEffect(jobStats, effect);
                 }
 
-
+                // 패시브 보너스 가져오기
                 for (PassiveSkillDTO passiveSkill : masteryDTO.getJob().getPassiveSkills()) {
-                    if (passiveSkill.getPassiveId().equals(masteryDTO.getPassiveSkillId()) && (masteryDTO.getPassiveSkillStatus() == SkillStatus.RUNNING) ) {
+                    if (passiveSkill.getPassiveId().equals(masteryDTO.getPassiveSkillId()) &&
+                            (masteryDTO.getPassiveSkillStatus() == SkillStatus.RUNNING)) {
+
                         for (PassiveSkillEffectDTO skillEffect : passiveSkill.getEffects()) {
                             applyEffect(skillStats, skillEffect);
                         }

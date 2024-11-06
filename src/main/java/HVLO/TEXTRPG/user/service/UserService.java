@@ -5,6 +5,8 @@ import HVLO.TEXTRPG.global.constants.*;
 import HVLO.TEXTRPG.global.security.EncryptionUtil;
 import HVLO.TEXTRPG.global.security.JwtUtil;
 import HVLO.TEXTRPG.global.exception.GlobalException;
+import HVLO.TEXTRPG.job.entity.Job;
+import HVLO.TEXTRPG.job.repository.JobRepository;
 import HVLO.TEXTRPG.job.service.JobService;
 import HVLO.TEXTRPG.user.dto.*;
 import HVLO.TEXTRPG.user.entity.*;
@@ -38,6 +40,7 @@ public class UserService {
 
     public final String TIME = "time";
     private final UserFieldRepository userFieldRepository;
+    private final JobRepository jobRepository;
 
     // 회원가입
     @Transactional
@@ -141,6 +144,26 @@ public class UserService {
         userStats.setHp(updateDTO.getNewHp());
         userStats.setCurrentActionPoints(userStats.getCurrentActionPoints() - 1);
         userStatsRepository.save(userStats);
+    }
+
+    // EXP 업데이트
+    public void updateUserEXP(EXPUpdateDTO updateDTO) {
+        List<UserMastery> masteries = userMasteryRepository.findByUserId(updateDTO.getUserId());
+        // 직업 숙련도 업데이트
+        for (UserMastery mastery : masteries) {
+            if(mastery.getJobStatus() == JobStatus.RUNNING){
+                Job job = jobRepository.findById(mastery.getJobId())
+                        .orElseThrow(() -> new GlobalException(ErrorCode.JOB_NOT_FOUND));
+                mastery.setJobMasteryEXP(mastery.getJobMasteryEXP() + updateDTO.getQuantity());
+                if(mastery.getJobMasteryEXP() >= job.getMastery()){
+                    mastery.setJobMasteryEXP(job.getMastery());
+                    mastery.setJobStatus(JobStatus.MASTER_RUNNING);
+                }
+                userMasteryRepository.save(mastery);
+            }
+        }
+
+
     }
 
 
