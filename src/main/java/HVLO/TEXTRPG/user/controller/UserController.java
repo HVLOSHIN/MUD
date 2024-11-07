@@ -97,9 +97,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserEquipmentDTO(id));
     }
 
-//    // 보유 장비 상태 업데이트
-//    @PutMapping("/{id}/equipment")
-//    public ResponseEntity<UserEquipmentDTO> updateEquipment(@RequestBody UserEquipmentDTO userEquipmentDTO){
-//
-//    }
+    // 보유 장비 상태 업데이트
+    @PutMapping("/{id}/equipment")
+    public ResponseEntity<Void> updateEquipment(@RequestBody UserEquipmentDTO userEquipmentDTO){
+        userService.updateUserEquipment(userEquipmentDTO);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

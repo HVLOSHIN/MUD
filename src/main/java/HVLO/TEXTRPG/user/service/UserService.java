@@ -1,5 +1,6 @@
 package HVLO.TEXTRPG.user.service;
 
+import HVLO.TEXTRPG.equipment.dto.EquipmentDTO;
 import HVLO.TEXTRPG.equipment.service.EquipmentService;
 import HVLO.TEXTRPG.global.constants.*;
 import HVLO.TEXTRPG.global.security.EncryptionUtil;
@@ -257,6 +258,7 @@ public class UserService {
         return dto;
     }
 
+    // 레벨업
     @Transactional
     public UserStatsDTO updateUserStats(Long userId, LevelUpDTO levelUpDTO) {
         UserStats userStats = userStatsRepository.findById(userId)
@@ -269,6 +271,15 @@ public class UserService {
 
         userStatsRepository.save(userStats);
         return UserStatsMapper.toDto(userStats);
+    }
+
+    // 장비 상태 변경
+    @Transactional
+    public void updateUserEquipment(UserEquipmentDTO userEquipmentDTO) {
+        UserEquipment equipment = userEquipmentRepository.findById(userEquipmentDTO.getId())
+                .orElseThrow(() -> new GlobalException(ErrorCode.USER_EQUIPMENT_NOT_FOUND));
+        equipment.setEquipped(userEquipmentDTO.isEquipped());
+        userEquipmentRepository.save(equipment);
     }
 
 
