@@ -273,11 +273,12 @@ public class UserService {
 
     // 장비 상태 변경
     @Transactional
-    public void toggleEquipment(ToggleEquipmentDTO toggleEquipmentDTO) {
+    public UserEquipmentDTO toggleEquipment(ToggleEquipmentDTO toggleEquipmentDTO) {
         UserEquipment equipment = userEquipmentRepository.findById(toggleEquipmentDTO.getId())
                 .orElseThrow(() -> new GlobalException(ErrorCode.USER_EQUIPMENT_NOT_FOUND));
-        equipment.setEquipped(toggleEquipmentDTO.isEquipped());
+        equipment.setEquipped(!equipment.isEquipped());
         userEquipmentRepository.save(equipment);
+        return UserEquipmentMapper.toDTO(equipment, equipmentService.findEquipmentById(equipment.getEquipmentId()));
     }
 
 

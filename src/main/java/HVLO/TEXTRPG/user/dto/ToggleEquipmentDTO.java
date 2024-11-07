@@ -15,7 +15,4 @@ import java.util.List;
 @NoArgsConstructor
 public class ToggleEquipmentDTO {
     private Long id;
-
-    private boolean isEquipped;
-
 }
