@@ -100,7 +100,7 @@ public class UserController {
     // 보유 장비 상태 업데이트
     @PutMapping("/{id}/equipment")
     public ResponseEntity<Void> toggleEquipment(@RequestBody ToggleEquipmentDTO toggleEquipmentDTO){
-        userService.toggleEquipment(ToggleEquipmentDTO);
+        userService.toggleEquipment(toggleEquipmentDTO);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
