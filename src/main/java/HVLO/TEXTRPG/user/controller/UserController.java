@@ -2,6 +2,7 @@ package HVLO.TEXTRPG.user.controller;
 
 import HVLO.TEXTRPG.user.dto.*;
 import HVLO.TEXTRPG.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
+    @GetMapping
+    public ResponseEntity<IdDTO> getUserId(HttpServletRequest request) {
+        IdDTO dto = new IdDTO();
+        dto.setUserId(userService.getUserId(request));
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {

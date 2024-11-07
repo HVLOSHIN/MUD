@@ -28,6 +28,7 @@ public class JwtUtil {
     public String generateToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getId().toString()) // 사용자 ID
+                .claim("id", user.getId())
                 .claim("loginId", user.getLoginId()) // 사용자 이름 추가
                 .claim("role", user.getRole().name()) // 사용자 역할 추가
                 .setIssuedAt(new Date()) // 발급 시간
@@ -40,6 +41,7 @@ public class JwtUtil {
     public String generateRefreshToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getId().toString()) // 사용자 ID
+                .claim("id", user.getId())
                 .claim("loginId", user.getLoginId())
                 .setIssuedAt(new Date()) // 발급 시간
                 .setExpiration(new Date(System.currentTimeMillis() + REFRESH_EXPIRATION_TIME)) // 만료 시간
@@ -56,6 +58,10 @@ public class JwtUtil {
     // JWT에서 사용자 이름 추출
     public String extractLoginId(String token) {
         return extractAllClaims(token).get("loginId", String.class);
+    }
+
+    public Long extractId(String token) {
+        return extractAllClaims(token).get("id", Long.class);
     }
 
     // JWT의 모든 클레임 추출

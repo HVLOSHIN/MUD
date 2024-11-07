@@ -16,6 +16,8 @@ import HVLO.TEXTRPG.user.dto.*;
 import HVLO.TEXTRPG.user.entity.*;
 import HVLO.TEXTRPG.user.mapper.*;
 import HVLO.TEXTRPG.user.repository.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -253,6 +255,13 @@ public class UserService {
         dto.setCurrentActionPoints(userStats.getCurrentActionPoints());
         dto.setMaxActionPoints(userStats.getMaxActionPoints());
         return dto;
+    }
+
+
+    public Long getUserId(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        String token = authHeader.substring(7);
+        return jwtUtil.extractId(token);
     }
 
     public UserDTO getUserDTO(Long userId) {
