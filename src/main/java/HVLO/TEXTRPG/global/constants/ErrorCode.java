@@ -21,6 +21,8 @@ public enum ErrorCode {
 
     USER_ACHIEVEMENTS_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_ACHIEVEMENTS-01","User Achievements를 찾을 수 없습니다."),
 
+    USER_EQUIPMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_EQUIPMENT-01","User equipment를 찾을 수 없습니다."),
+
     EQUIPMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "EQUIPMENT-01","Equipment를 찾을 수 없습니다."),
 
     EQUIPMENT_EFFECTS_NOT_FOUND(HttpStatus.NOT_FOUND, "EQUIPMENT_EFFECTS-01","Equipment Effects를 찾을 수 없습니다."),

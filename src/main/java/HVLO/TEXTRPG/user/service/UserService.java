@@ -16,6 +16,7 @@ import HVLO.TEXTRPG.user.dto.*;
 import HVLO.TEXTRPG.user.entity.*;
 import HVLO.TEXTRPG.user.mapper.*;
 import HVLO.TEXTRPG.user.repository.*;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -253,6 +254,38 @@ public class UserService {
         dto.setCurrentActionPoints(userStats.getCurrentActionPoints());
         dto.setMaxActionPoints(userStats.getMaxActionPoints());
         return dto;
+    }
+
+    // 레벨업
+    @Transactional
+    public UserStatsDTO updateUserStats(Long userId, LevelUpDTO levelUpDTO) {
+        UserStats userStats = userStatsRepository.findById(userId)
+                .orElseThrow(() -> new GlobalException(ErrorCode.USER_STATS_NOT_FOUND));
+        userStats.setLevel(levelUpDTO.getLevel());
+        userStats.setHp(levelUpDTO.getHp());
+        userStats.setStrength(levelUpDTO.getStrength());
+        userStats.setDexterity(levelUpDTO.getDexterity());
+        userStats.setIntelligence(levelUpDTO.getIntelligence());
+
+        userStatsRepository.save(userStats);
+        return UserStatsMapper.toDto(userStats);
+    }
+
+    // 장비 상태 변경
+    @Transactional
+    public UserEquipmentDTO toggleEquipment(ToggleEquipmentDTO toggleEquipmentDTO) {
+        UserEquipment equipment = userEquipmentRepository.findById(toggleEquipmentDTO.getId())
+                .orElseThrow(() -> new GlobalException(ErrorCode.USER_EQUIPMENT_NOT_FOUND));
+        equipment.setEquipped(!equipment.isEquipped());
+        userEquipmentRepository.save(equipment);
+        return UserEquipmentMapper.toDTO(equipment, equipmentService.findEquipmentById(equipment.getEquipmentId()));
+    }
+
+
+    public Long getUserId(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        String token = authHeader.substring(7);
+        return jwtUtil.extractId(token);
     }
 
     public UserDTO getUserDTO(Long userId) {

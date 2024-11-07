@@ -25,4 +25,11 @@ public interface UserStatsRepository extends JpaRepository<UserStats, Long> {
             "us.userId, us.currentActionPoints, us.maxActionPoints)" +
             "FROM UserStats  us WHERE us.userId = :userId")
     Optional<ActionPointDTO> findActionPointDTOByUserId(@Param("userId") Long userId);
+
+
+    @Query("SELECT new HVLO.TEXTRPG.user.dto.LevelUpDTO(" +
+            "us.level, us.hp, us.strength, us.dexterity, us.intelligence)" +
+            "FROM UserStats  us WHERE us.userId = :userId")
+    Optional<ActionPointDTO> findLevelUpDTOByUserId(@Param("userId") Long userId);
+
 }

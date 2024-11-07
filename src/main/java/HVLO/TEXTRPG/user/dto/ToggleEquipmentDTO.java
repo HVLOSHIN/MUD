@@ -13,18 +13,6 @@ import java.util.List;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEquipmentDTO {
+public class ToggleEquipmentDTO {
     private Long id;
-
-    private boolean isEquipped;
-
-    private EquipmentGrade grade;
-
-    private String name;
-
-    private String description;
-
-    private EquipmentSlot slot;
-
-    private List<EquipmentEffectDTO> effects;
 }

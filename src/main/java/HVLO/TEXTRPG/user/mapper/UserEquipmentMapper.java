@@ -7,7 +7,7 @@ import HVLO.TEXTRPG.user.entity.UserEquipment;
 public class UserEquipmentMapper {
     public static UserEquipmentDTO toDTO(UserEquipment userEquipment, EquipmentDTO equipmentDTO) {
         UserEquipmentDTO dto = new UserEquipmentDTO();
-        dto.setUserId(userEquipment.getUserId());
+        dto.setId(userEquipment.getId());
         dto.setEquipped(userEquipment.isEquipped());
         dto.setGrade(userEquipment.getGrade());
 

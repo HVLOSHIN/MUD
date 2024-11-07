@@ -2,6 +2,7 @@ package HVLO.TEXTRPG.user.controller;
 
 import HVLO.TEXTRPG.user.dto.*;
 import HVLO.TEXTRPG.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +19,16 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
+    @GetMapping
+    public ResponseEntity<IdDTO> getUserId(HttpServletRequest request) {
+        IdDTO dto = new IdDTO();
+        dto.setUserId(userService.getUserId(request));
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getUserDTO(id));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserDTO(id));
     }
 
     @GetMapping("/{id}/field")
@@ -42,6 +50,12 @@ public class UserController {
     @PostMapping("/refresh")
     public ResponseEntity<AccessTokenDTO> refreshAccessToken(@RequestBody AccessTokenDTO accessTokenDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.refreshAccessToken(accessTokenDTO));
+    }
+
+    // 스텟 조회
+    @GetMapping("/{id}/stats")
+    public ResponseEntity<UserStatsDTO> getUserStats(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserStatsDTO(id));
     }
 
     @PutMapping("/hp")
@@ -69,5 +83,23 @@ public class UserController {
     @PostMapping("action-points")
     public ResponseEntity<ActionPointDTO> updateActionPoints(@RequestParam Long userId){
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateActionPoints(userId));
+    }
+
+    // 레벨업
+    @PostMapping("/{id}/training")
+    public ResponseEntity<UserStatsDTO> updateUserStats(@PathVariable Long id, @RequestBody LevelUpDTO levelUpDTO){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUserStats(id, levelUpDTO));
+    }
+
+    // 보유 장비 조회
+    @GetMapping("/{id}/equipment")
+    public ResponseEntity<List<UserEquipmentDTO>> getEquipment(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserEquipmentDTO(id));
+    }
+
+    // 보유 장비 상태 업데이트
+    @PutMapping("/equipment")
+    public ResponseEntity<UserEquipmentDTO> toggleEquipment(@RequestBody ToggleEquipmentDTO toggleEquipmentDTO){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.toggleEquipment(toggleEquipmentDTO));
     }
 }
