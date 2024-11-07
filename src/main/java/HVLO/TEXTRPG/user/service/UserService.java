@@ -257,6 +257,20 @@ public class UserService {
         return dto;
     }
 
+    @Transactional
+    public UserStatsDTO updateUserStats(Long userId, LevelUpDTO levelUpDTO) {
+        UserStats userStats = userStatsRepository.findById(userId)
+                .orElseThrow(() -> new GlobalException(ErrorCode.USER_STATS_NOT_FOUND));
+        userStats.setLevel(levelUpDTO.getLevel());
+        userStats.setHp(levelUpDTO.getHp());
+        userStats.setStrength(levelUpDTO.getStrength());
+        userStats.setDexterity(levelUpDTO.getDexterity());
+        userStats.setIntelligence(levelUpDTO.getIntelligence());
+
+        userStatsRepository.save(userStats);
+        return UserStatsMapper.toDto(userStats);
+    }
+
 
     public Long getUserId(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");

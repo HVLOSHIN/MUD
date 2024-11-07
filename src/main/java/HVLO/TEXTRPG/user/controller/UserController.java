@@ -52,6 +52,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.refreshAccessToken(accessTokenDTO));
     }
 
+    // 스텟 조회
+    @GetMapping("/{id}/stats")
+    public ResponseEntity<UserStatsDTO> getUserStats(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserStatsDTO(id));
+    }
+
     @PutMapping("/hp")
     public ResponseEntity<Void> updateUserHp(@RequestBody HPUpdateDTO hpUpdateDTO) {
         userService.updateUserHp(hpUpdateDTO);
@@ -77,5 +83,11 @@ public class UserController {
     @PostMapping("action-points")
     public ResponseEntity<ActionPointDTO> updateActionPoints(@RequestParam Long userId){
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateActionPoints(userId));
+    }
+
+    // 레벨업
+    @PostMapping("/{id}/training")
+    public ResponseEntity<UserStatsDTO> updateUserStats(@PathVariable Long id, @RequestBody LevelUpDTO levelUpDTO){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUserStats(id, levelUpDTO));
     }
 }
