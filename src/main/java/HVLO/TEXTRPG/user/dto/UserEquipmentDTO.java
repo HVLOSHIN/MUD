@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserEquipmentDTO {
-    private Long userId;
+    private Long id;
 
     private boolean isEquipped;
 

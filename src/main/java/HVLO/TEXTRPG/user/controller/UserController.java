@@ -96,4 +96,10 @@ public class UserController {
     public ResponseEntity<List<UserEquipmentDTO>> getEquipment(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserEquipmentDTO(id));
     }
+
+//    // 보유 장비 상태 업데이트
+//    @PutMapping("/{id}/equipment")
+//    public ResponseEntity<UserEquipmentDTO> updateEquipment(@RequestBody UserEquipmentDTO userEquipmentDTO){
+//
+//    }
 }
