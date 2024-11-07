@@ -28,7 +28,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getUserDTO(id));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserDTO(id));
     }
 
     @GetMapping("/{id}/field")
@@ -89,5 +89,11 @@ public class UserController {
     @PostMapping("/{id}/training")
     public ResponseEntity<UserStatsDTO> updateUserStats(@PathVariable Long id, @RequestBody LevelUpDTO levelUpDTO){
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUserStats(id, levelUpDTO));
+    }
+
+    // 보유 장비 조회
+    @GetMapping("/{id}/equipment")
+    public ResponseEntity<List<UserEquipmentDTO>> getEquipment(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserEquipmentDTO(id));
     }
 }
