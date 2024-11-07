@@ -1,6 +1,5 @@
 package HVLO.TEXTRPG.user.service;
 
-import HVLO.TEXTRPG.equipment.dto.EquipmentDTO;
 import HVLO.TEXTRPG.equipment.service.EquipmentService;
 import HVLO.TEXTRPG.global.constants.*;
 import HVLO.TEXTRPG.global.security.EncryptionUtil;
@@ -18,7 +17,6 @@ import HVLO.TEXTRPG.user.entity.*;
 import HVLO.TEXTRPG.user.mapper.*;
 import HVLO.TEXTRPG.user.repository.*;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -275,10 +273,10 @@ public class UserService {
 
     // 장비 상태 변경
     @Transactional
-    public void updateUserEquipment(UserEquipmentDTO userEquipmentDTO) {
-        UserEquipment equipment = userEquipmentRepository.findById(userEquipmentDTO.getId())
+    public void toggleEquipment(ToggleEquipmentDTO toggleEquipmentDTO) {
+        UserEquipment equipment = userEquipmentRepository.findById(toggleEquipmentDTO.getId())
                 .orElseThrow(() -> new GlobalException(ErrorCode.USER_EQUIPMENT_NOT_FOUND));
-        equipment.setEquipped(userEquipmentDTO.isEquipped());
+        equipment.setEquipped(toggleEquipmentDTO.isEquipped());
         userEquipmentRepository.save(equipment);
     }
 
