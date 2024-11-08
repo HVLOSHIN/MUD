@@ -49,8 +49,6 @@ public class UserService {
     private final PassiveSkillRepository passiveSkillRepository;
     private final ActiveSkillRepository activeSkillRepository;
     public final String TIME = "time";
-    private final String PASSIVE = "passive";
-    private final String ACTIVE = "active";
 
     // 회원가입
     @Transactional
