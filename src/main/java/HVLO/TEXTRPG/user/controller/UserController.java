@@ -91,6 +91,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUserStats(id, levelUpDTO));
     }
 
+    @GetMapping("/{id}/mastery")
+    public ResponseEntity<List<UserMasteryDTO>> getUserMastery(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserMasteryDTO(id));
+    }
+
     // 보유 장비 조회
     @GetMapping("/{id}/equipment")
     public ResponseEntity<List<UserEquipmentDTO>> getEquipment(@PathVariable Long id) {
