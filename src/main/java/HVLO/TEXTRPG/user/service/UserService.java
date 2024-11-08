@@ -44,11 +44,11 @@ public class UserService {
     private final JwtUtil jwtUtil;
     private final UserCombatStatusService userCombatStatusService;
 
-    public final String TIME = "time";
     private final UserFieldRepository userFieldRepository;
     private final JobRepository jobRepository;
     private final PassiveSkillRepository passiveSkillRepository;
     private final ActiveSkillRepository activeSkillRepository;
+    public final String TIME = "time";
 
     // 회원가입
     @Transactional
@@ -269,6 +269,16 @@ public class UserService {
 
         userStatsRepository.save(userStats);
         return UserStatsMapper.toDto(userStats);
+    }
+
+
+    @Transactional
+    public UserMasteryDTO toggleSkill(UserMasteryDTO updateDTO) {
+        UserMastery mastery = userMasteryRepository.findByUserIdAndJobId(updateDTO.getUserId(), updateDTO.getJobId());
+            mastery.setPassiveSkillStatus(updateDTO.getPassiveSkillStatus());
+            mastery.setActiveSkillStatus(updateDTO.getActiveSkillStatus());
+        userMasteryRepository.save(mastery);
+        return updateDTO;
     }
 
     // 장비 상태 변경

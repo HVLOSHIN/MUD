@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+    INVALID_VALUE(HttpStatus.BAD_REQUEST, "GLOBAL-01","올바르지 않은 값"),
+
     INVALID_REFRESH_TOKEN(HttpStatus.NOT_FOUND, "SECURITY-01","올바르지 않은 리프레시 토큰"),
     NOT_AUTHORIZED(HttpStatus.UNAUTHORIZED,"SECURITY-02","올바르지 않은 접근"),
 

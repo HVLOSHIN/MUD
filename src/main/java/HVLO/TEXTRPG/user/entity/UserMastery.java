@@ -20,7 +20,7 @@ public class UserMastery {
 
     private Long userId;
 
-    private Long JobId;
+    private Long jobId;
 
     @Enumerated(EnumType.STRING)
     private JobStatus jobStatus = JobStatus.NOT_STARTED;
@@ -44,7 +44,7 @@ public class UserMastery {
 
     public UserMastery(Long userId, Long jobId, JobStatus status, Long activeSkillId, Long passiveSkillId, SkillStatus passiveSkillStatus, SkillStatus activeSkillStatus) {
         this.userId = userId;
-        JobId = jobId;
+        this.jobId = jobId;
         this.jobStatus = status;
         this.activeSkillId = activeSkillId;
         this.passiveSkillId = passiveSkillId;
